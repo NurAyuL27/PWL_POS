@@ -15,7 +15,7 @@
         @else
             <form method="POST" action="{{ url('/user/'.$user->user_id) }}" class="form-horizontal">
                 @csrf
-                @method('PUT')
+                {!!method_field('PUT') !!}
                 
                 <div class="form-group row">
                     <label class="col-1 control-label col-form-label">Level</label>

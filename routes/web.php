@@ -8,6 +8,17 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 
+/*
+|--------------------------------------------------------------------------
+| Web Routes
+|--------------------------------------------------------------------------
+|
+| Here is where you can register web routes for your application. These
+| routes are loaded by the RouteServiceProvider and all of them will
+| be assigned to the "web" middleware group. Make something great!
+|
+*/
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -25,3 +36,13 @@ Route::put('/{id}', [UserController::class, 'update']);         //menyimpan peru
 Route::delete('/{id}', [UserController::class, 'destroy']);     //menghapus data user
 });
 
+Route::group(['prefix' => 'kategori'], function () {
+    Route::get('/', [KategoriController::class, 'index']);
+    Route::post('/list', [KategoriController::class, 'list']);
+    Route::get('/create', [KategoriController::class, 'create']);
+    Route::post('/', [KategoriController::class, 'store']);
+    Route::get('/{id}', [KategoriController::class, 'show']);
+    Route::get('/{id}/edit', [KategoriController::class, 'edit']);
+    Route::put('/{id}', [KategoriController::class, 'update']);
+    Route::delete('/{id}', [KategoriController::class, 'destroy']);
+});

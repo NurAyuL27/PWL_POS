@@ -33,6 +33,8 @@ Route::post('/ajax', [UserController::class, 'store_ajax']);             //menyi
 Route::get('/{id}', [UserController::class, 'show']);           //menmpilkan detail user
 Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);      //menampilkan halaman form edit
 Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);         //menyimpan perubahan data user
+Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']); // Untuk tampilkan form confirm delete user Ajax
+Route:: delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']); // Untuk hapus data user Ajax
 Route::delete('/{id}', [UserController::class, 'destroy']);     //menghapus data user
 });
 

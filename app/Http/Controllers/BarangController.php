@@ -89,6 +89,7 @@
      {
          $request->validate([
              'nama_barang' => 'required|string|max:100',
+             'barang_kode' => 'required|unique:barang,barang_kode|max:10',
              'kategori_id' => 'required|exists:m_kategori,kategori_id',
              'harga_beli' => 'required|numeric|min:0',
              'harga_jual' => 'required|numeric|min:0',

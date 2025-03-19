@@ -19,6 +19,17 @@
                      @csrf
                      {{-- Gunakan @method('PUT') untuk update --}}
                      @method('PUT') 
+
+                     <div class="form-group row">
+                        <label class="col-2 control-label col-form-label">Kode Barang</label>
+                        <div class="col-10">
+                            <input type="text" class="form-control" id="barang_kode" name="barang_kode"
+                                value="{{ old('barang_kode', $barang->barang_kode) }}" required>
+                            @error('barang_kode')
+                                <small class="form-text text-danger">{{ $message }}</small>
+                            @enderror
+                        </div>
+                    </div>
                      
                      <div class="form-group row">
                          <label class="col-2 control-label col-form-label">Nama Barang</label>

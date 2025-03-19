@@ -41,6 +41,7 @@
                  <thead>
                      <tr>
                          <th>ID</th>
+                         <th>Kode Barang</th>
                          <th>Nama Barang</th>
                          <th>Kategori</th>
                          <th>Harga Beli</th>
@@ -91,6 +92,7 @@
                  },
                  columns: [
                      { data: "barang_id", className: "text-center", orderable: true, searchable: false },
+                     { data: "barang_kode", className: "", orderable: true, searchable: true },
                      { data: "nama_barang", className: "", orderable: true, searchable: true },
                      { data: "kategori.kategori_nama", className: "", orderable: true, searchable: true },
                      { data: "harga_beli", className: "text-right", orderable: true, searchable: false },

@@ -18,6 +18,11 @@
             <small id="error-kategori_id" class="error-text form-text text-danger"></small>
         </div>
         <div class="form-group">
+            <label>Kode Barang</label>
+            <input type="text" name="barang_kode" id="barang_kode" class="form-control" required>
+            <small id="error-barang_kode" class="error-text form-text text-danger"></small>
+        </div>        
+        <div class="form-group">
             <label>Nama Barang</label>
             <input type="text" name="barang_nama" id="barang_nama" class="form-control" required>
             <small id="error-nama" class="error-text form-text text-danger"></small>

@@ -13,7 +13,7 @@
      protected $table = 'm_barang'; 
      protected $primaryKey = 'barang_id';
  
-     protected $fillable = ['nama_barang', 'kategori_id', 'harga_beli', 'harga_jual'];
+     protected $fillable = ['nama_barang', 'barang_kode', 'kategori_id', 'harga_beli', 'harga_jual'];
  
      public function kategori(): BelongsTo
      {

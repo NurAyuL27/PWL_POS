@@ -149,7 +149,7 @@ class LevelController extends Controller
             'level_kode' => 'required|string|max:10'
         ]);
 
-        LevelModel::find($id)->update([
+        levelModel::find($id)->update([
             'level_nama' => $request->level_nama,
             'level_kode' => $request->level_kode,
         ]);

@@ -31,26 +31,26 @@ class SupplierController extends Controller
 
     public function list(Request $request)
     {
-        $suppliers = SupplierModel::select('supplier_id', 'supplier_nama', 'supplier_kode', 'supplier_alamat');
+        $suppliers = SupplierModel::select('id', 'supplier_nama', 'supplier_kode', 'supplier_alamat');
 
         //Filter berdasarkan supplier
-        if ($request->supplier_id) {
-            $suppliers->where('supplier_id', $request->supplier_id);
+        if ($request->id) {
+            $suppliers->where('id', $request->id);
         }
 
         return DataTables::of($suppliers)
             ->addIndexColumn()->addColumn('aksi', function ($supplier) {
-                //$btn = '<a href="' . url('/supplier/' . $supplier->supplier_id) . '" class="btn btn-info btn-sm">Detail</a> ';
-                //$btn .= '<a href="' . url('/supplier/' . $supplier->supplier_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
+                //$btn = '<a href="' . url('/supplier/' . $supplier->id) . '" class="btn btn-info btn-sm">Detail</a> ';
+                //$btn .= '<a href="' . url('/supplier/' . $supplier->id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
                 //$btn .= '<form class="d-inline-block" method="POST" action="' .
-                //    url('/supplier/' . $supplier->supplier_id) . '">' . csrf_field() . method_field('DELETE') .
+                //    url('/supplier/' . $supplier->id) . '">' . csrf_field() . method_field('DELETE') .
                 //    '<button type="submit" class="btn btn-danger btn-sm" 
                 //    onclick="return confirm(\'Apakah Anda yakit menghapus data ini?\');">Hapus</button></form>';
-                $btn = '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id .
+                $btn = '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->id .
                     '/show_ajax') . '\')" class="btn btn-info btn-sm">Detail</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id .
+                $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->id .
                     '/edit_ajax') . '\')" class="btn btn-warning btn-sm">Edit</button> ';
-                $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->supplier_id .
+                $btn .= '<button onclick="modalAction(\'' . url('/supplier/' . $supplier->id .
                     '/delete_ajax') . '\')" class="btn btn-danger btn-sm">Hapus</button> ';
                 return $btn;
             })->rawColumns(['aksi'])
@@ -239,7 +239,7 @@ class SupplierController extends Controller
             $rules = [
                 'supplier_nama' => 'required|string|max:100',
                 'supplier_alamat' => 'required|string|max:100',
-                'supplier_kode' => 'required|string|max:10|unique:m_supplier,supplier_kode,' . $id . ',supplier_id'
+                'supplier_kode' => 'required|string|max:10|unique:m_supplier,supplier_kode,' . $id . ',id'
             ];
 
             $messages = [

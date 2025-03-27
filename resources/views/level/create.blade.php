@@ -1,89 +1,51 @@
-@empty($level)
-    <div id="modal-delete" class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLabel">Kesalahan</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <div class="alert alert-danger">
-                    <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data yang anda cari tidak ditemukan
+@extends('layouts.template')
+
+@section('content')
+    <div class="card card-outline card-primary">
+        <div class="card-header">
+            <h3 class="card-title">{{ $page->title }}</h3>
+            <div class="card-tools"></div>
+        </div>
+        <div class="card-body">
+            <form method="POST" action="{{ url('level') }}" class="form-horizontal">
+                @csrf
+
+                <div class="form-group row">
+                    <label class="col-1 control-label col-form-label">Kode Level</label>
+                    <div class="col-11">
+                        <input type="text" class="form-control" id="level_kode" name="level_kode"
+                            value="{{ old('level_kode') }}" required>
+                        @error('level_kode')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
                 </div>
-                <a href="{{ url('/level') }}" class="btn btn-warning">Kembali</a>
-            </div>
+
+                <div class="form-group row">
+                    <label class="col-1 control-label col-form-label">Nama Level</label>
+                    <div class="col-11">
+                        <input type="text" class="form-control" id="level_nama" name="level_nama"
+                            value="{{ old('level_nama') }}" required>
+                        @error('level_nama')
+                            <small class="form-text text-danger">{{ $message }}</small>
+                        @enderror
+                    </div>
+                </div>
+
+                <div class="form-group row">
+                    <label class="col-1 control-label col-form-label"></label>
+                    <div class="col-11">
+                        <button type="submit" class="btn btn-primary btn-sm">Simpan</button>
+                        <a class="btn btn-sm btn-default ml-1" href="{{ url('level') }}">Kembali</a>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
-@else
-    <form action="{{ url('/level/' . $level->level_id . '/delete_ajax') }}" method="POST" id="form-delete">
-        @csrf
-        @method('DELETE')
-        <div class="modal-header">
-            <h5 class="modal-title">Delete Data level</h5>
-            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-        </div>
-        <div class="modal-body">
-            <div class="alert alert-warning">
-                <h5><i class="icon fas fa-ban"></i> Konfirmasi !!!</h5>
-                Apakah Anda ingin menghapus data seperti di bawah ini?
-            </div>
-            <table class="table table-sm table-bordered table-striped">
-                <tr>
-                    <th class="text-right col-3">Nama Level :</th>
-                    <td class="col-9">{{ $level->level_nama }}</td>
-                </tr>
-                <tr>
-                    <th class="text-right col-3">Kode Level :</th>
-                    <td class="col-9">{{ $level->level_kode }}</td>
-                </tr>
-            </table>
-        </div>
-        <div class="modal-footer">
-            <button type="button" data-dismiss="modal" class="btn btn-warning">Batal</button>
-            <button type="submit" class="btn btn-primary">Ya, Hapus</button>
-        </div>
-    </form>
-    <script>
-        $(document).ready(function () {
-            $("#form-delete").validate({
-                rules: {},
-                submitHandler: function (form) {
-                    $.ajax({
-                        url: form.action,
-                        type: form.method,
-                        data: $(form).serialize(),
-                        success: function (response) {
-                            if (response.status) {
-                                $('#modal-crud').modal('hide');
-                                Swal.fire({ icon: 'success', title: 'Berhasil', text: response.message });
-                                dataLevel.ajax.reload();
-                            } else {
-                                $('.error-text').text('');
-                                $.each(response.msgField, function (prefix, val) {
-                                    $('#error-' + prefix).text(val[0]);
-                                });
-                                Swal.fire({ icon: 'error', title: 'Terjadi Kesalahan', text: response.message });
-                            }
-                        }
-                    });
-                    return false;
-                },
-                errorElement: 'span',
-                errorPlacement: function (error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function (element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function (element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
-            });
-        });
-    </script>
-@endempty
+@endsection
+
+@push('css')
+@endpush
+
+@push('js')
+@endpush

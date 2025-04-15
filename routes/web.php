@@ -89,6 +89,8 @@ Route::middleware(['auth'])->group(function() { // artinya semua route di dalam 
         Route::put('/kategori/{id}/update_ajax', [KategoriController::class, 'update_ajax']);
         Route::get('/kategori/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
         Route::delete('/kategori/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
+        Route::get('/kategori/import', [BarangController::class, 'import']); // ajax form upload excel
+        Route::post('/kategori/import_ajax', [BarangController::class, 'import_ajax']);
         Route::delete('/kategori/{id}', [KategoriController::class, 'destroy']);
     });
 

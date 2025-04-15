@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
 
-
 class KategoriController extends Controller
 {
     public function index()
@@ -21,13 +20,12 @@ class KategoriController extends Controller
             'title' => 'Daftar Kategori yang terdaftar dalam sistem'
         ];
 
+        $kategori = KategoriModel::all();  
+
         $activeMenu = 'kategori';
 
-        return view('kategori.index', [
-            'breadcrumb' => $breadcrumb,
-            'page' => $page,
-            'activeMenu' => $activeMenu
-        ]);
+        return view('kategori.index', compact('breadcrumb', 'kategori', 'page', 'activeMenu'));
+
     }
 
     public function list(Request $request)

@@ -86,7 +86,10 @@
           className: "text-center",
           width: "5%",
           orderable: false,
-          searchable: false
+          searchable: false,
+          render: function (data, type, row, meta) {
+            return meta.row + 1;
+          }
         },
         {
           data: "barang_kode",

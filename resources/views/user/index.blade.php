@@ -1,145 +1,133 @@
 @extends('layouts.template')
 
 @section('content')
-<div class="card card-outline card-primary">
+<div class="card">
     <div class="card-header">
-        <h3 class="card-title">{{ $page->title }}</h3>
+        <h3 class="card-title">Daftar Pengguna</h3>
         <div class="card-tools">
-            <a class="btn btn-sm btn-primary mt-1" href="{{ url('user/create') }}">Tambah</a>
-            <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-sm btn-success mt-1">Tambah Ajax</button>
+            <button onclick="modalAction('{{ url('user/import') }}')" class="btn btn-info">Import Pengguna</button>
+            <a href="{{ url('user/create') }}" class="btn btn-primary">Tambah Data</a>
+            <button onclick="modalAction('{{ url('user/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
         </div>
     </div>
+
     <div class="card-body">
-        @if (session('success'))
-            <div class="alert alert-success">{{ session('success') }}</div>
-        @endif
-        @if (session('error'))
-            <div class="alert alert-danger">{{ session('error') }}</div>
-        @endif
-        <div class="row">
-            <div class="col-md-12">
-                <div class="form-group row">
-                    <label class="col-1 control-label col-form-label">Filter: </label>
-                    <div class="col-3">
-                        <select class="form-control" id="level_id" name="level_id" required>
-                            <option value="">- Semua </option>
-                            @foreach($level as $item)
-                                <option value="{{ $item->level_id }}">{{ $item->level_nama }}</option>
-                            @endforeach
-                        </select>
-                        <small class="form-text text-muted">Level Pengguna</small>
+        <!-- untuk Filter data -->
+        <div id="filter" class="form-horizontal filter-date p-2 border-bottom mb-2">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-sm row text-sm mb-0">
+                        <label for="filter_level" class="col-md-1 col-form-label">Filter</label>
+                        <div class="col-md-3">
+                            <select name="filter_level" class="form-control form-control-sm filter_level">
+                                <option value="">- Semua -</option>
+                                @foreach($level as $l)
+                                    <option value="{{ $l->level_id }}">{{ $l->level_nama }}</option>
+                                @endforeach
+                            </select>
+                            <small class="form-text text-muted">Level Pengguna</small>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-        <table class="table table-bordered table-striped table-hover table-sm" id="table_user">
+
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
+        @if(session('error'))
+            <div class="alert alert-danger">{{ session('error') }}</div>
+        @endif
+
+        <table class="table table-bordered table-sm table-striped table-hover" id="table-user">
             <thead>
-                <tr><th>ID</th>
+                <tr>
+                    <th>No</th>
                     <th>Username</th>
                     <th>Nama</th>
                     <th>Level Pengguna</th>
-                    <th>Aksi</th></tr>
+                    <th>Aksi</th>
+                </tr>
             </thead>
+            <tbody></tbody>
         </table>
     </div>
 </div>
 
-{{-- Modal Container --}}
-<div id="modal-crud" class="modal fade animate shake" tabindex="-1" role="dialog" data-backdrop="static" data-keyboard="false" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content"></div>
-    </div>
-</div>
+<div id="myModal" class="modal fade animate shake" tabindex="-1" data-backdrop="static" data-keyboard="false" data-width="75%"></div>
 @endsection
-
-@push('css')
-<style>
-    #table_user th, #table_user td {
-        white-space: nowrap; /* Agar teks tidak terpotong */
-        padding: 10px; /* Tambahkan padding agar lebih rapi */
-    }
-
-    #table_user th:nth-child(2), #table_user td:nth-child(2) { 
-        width: 200px; /* Ubah lebar kolom Username */
-    }
-
-    #table_user th:nth-child(3), #table_user td:nth-child(3) { 
-        width: 250px; /* Ubah lebar kolom Nama */
-    }
-
-    #table_user th:nth-child(4), #table_user td:nth-child(4) { 
-        width: 180px; /* Ubah lebar kolom Level Pengguna */
-    }
-
-    #table_user th:nth-child(5), #table_user td:nth-child(5) { 
-        width: 220px; /* Ubah lebar kolom Aksi */
-    }
-</style>
-@endpush
 
 @push('js')
 <script>
-        function modalAction(url) {
-            // Kosongkan modal sebelum memuat konten baru
-            $("#modal-crud .modal-content").html("");
-            // Panggil modal melalui AJAX
-            $.get(url, function (response) {
-                $("#modal-crud .modal-content").html(response);
-                $("#modal-crud").modal("show");
-            });
-        }
-        // Bersihkan isi modal setelah ditutup
-        $('#modal-crud').on('hidden.bs.modal', function () {
-            $("#modal-crud .modal-content").html("");
+    function modalAction(url = '') {
+        $('#myModal').load(url, function () {
+            $('#myModal').modal('show');
         });
+    }
 
-    var dataUser;
-    $(document).ready(function() {
-        dataUser = $('#table_user').DataTable({
+    var tableUser;
+    $(document).ready(function () {
+        tableUser = $('#table-user').DataTable({
+            processing: true,
             serverSide: true,
             ajax: {
                 "url": "{{ url('user/list') }}",
                 "dataType": "json",
-                "type": "GET",
+                "type": "POST",
                 "data": function (d) {
-                    d.level_id = $('#level_id').val();
+                    d.filter_level = $('.filter_level').val();
                 }
             },
             columns: [
-                { 
-                    data: "DT_RowIndex",
+                {
+                    data: null,
                     className: "text-center",
+                    width: "5%",
                     orderable: false,
-                    searchable: false
+                    searchable: false,
+                    render: function (data, type, row, meta) {
+                        return meta.row + 1;
+                    }
                 },
-                { 
+                {
                     data: "username",
                     className: "",
+                    width: "25%",
                     orderable: true,
                     searchable: true
                 },
-                { 
+                {
                     data: "nama",
                     className: "",
+                    width: "30%",
                     orderable: true,
                     searchable: true
                 },
-                { 
+                {
                     data: "level.level_nama",
                     className: "",
-                    orderable: false,
+                    width: "20%",
+                    orderable: true,
                     searchable: false
                 },
-                { 
+                {
                     data: "aksi",
-                    className: "",
+                    className: "text-center",
+                    width: "20%",
                     orderable: false,
                     searchable: false
                 }
             ]
         });
-        $('#level_id').on('change', function() {
-        dataUser.ajax.reload();
+
+        $('#table-user_filter input').unbind().bind().on('keyup', function (e) {
+            if (e.keyCode == 13) {
+                tableUser.search(this.value).draw();
+            }
+        });
+
+        $('.filter_level').change(function () {
+            tableUser.draw();
         });
     });
 </script>

@@ -109,6 +109,8 @@ Route::middleware(['auth'])->group(function() { // artinya semua route di dalam 
         Route::put('/supplier/{id}/update_ajax', [SupplierController::class, 'update_ajax']);
         Route::get('/supplier/{id}/delete_ajax', [SupplierController::class, 'confirm_ajax']);
         Route::delete('/supplier/{id}/delete_ajax', [SupplierController::class, 'delete_ajax']);
+        Route::get('/supplier/import', [BarangController::class, 'import']); // ajax form upload excel
+        Route::post('/supplier/import_ajax', [BarangController::class, 'import_ajax']);
         Route::delete('/supplier/{id}', [SupplierController::class, 'destroy']);
     });
 

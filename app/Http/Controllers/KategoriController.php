@@ -6,6 +6,8 @@ use App\Models\KategoriModel;
 use Illuminate\Http\Request;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Validator;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 
 class KategoriController extends Controller
 {
@@ -293,5 +295,60 @@ class KategoriController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    public function export_excel()
+    {
+        // ambil data kategori yang akan di export
+        $kategori = KategoriModel::select('kategori_id', 'kategori_kode', 'kategori_nama')
+            ->orderBy('kategori_id')
+            ->get();
+
+        // load library spreadsheet
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // header kolom
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Kode Kategori');
+        $sheet->setCellValue('C1', 'Nama Kategori');
+
+        $sheet->getStyle('A1:C1')->getFont()->setBold(true);
+
+        $no = 1;
+        $baris = 2;
+        foreach ($kategori as $value) {
+            $sheet->setCellValue('A'.$baris, $no);
+            $sheet->setCellValue('B'.$baris, $value->kategori_kode);
+            $sheet->setCellValue('C'.$baris, $value->kategori_nama);
+            $baris++;
+            $no++;
+        }
+
+        // set ukuran kolom agar auto
+        foreach (range('A', 'C') as $columnID) {
+            $sheet->getColumnDimension($columnID)->setAutoSize(true);
+        }
+
+        // judul sheet
+        $sheet->setTitle('Data Kategori');
+
+        // buat file excel
+        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+        $filename = 'Data Kategori '.date('Y-m-d H:i:s').'.xlsx';
+
+        // header untuk download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Cache-Control: max-age=0');
+        header('Cache-Control: max-age=1');
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, dMY H:i:s'). 'GMT');
+        header('Cache-Control: cache, must-revalidate');
+        header('Pragma: public');
+
+        // simpan ke output
+        $writer->save('php://output');
+        exit;
     }
 }

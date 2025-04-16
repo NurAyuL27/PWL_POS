@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class UserController extends Controller
 {
@@ -203,5 +204,20 @@ class UserController extends Controller
 
         $writer->save('php://output');
         exit;
+    }
+
+    public function export_pdf()
+    {
+        $users = UserModel::select('user_id', 'username', 'nama', 'level_id', 'created_at')
+            ->orderBy('nama')
+            ->with('level')
+            ->get();
+
+        $pdf = Pdf::loadView('user.export_pdf', ['users' => $users]);
+        $pdf->setPaper('a4', 'portrait'); // Ukuran kertas dan orientasi
+        $pdf->setOption("isRemoteEnabled", true); // Jika ada gambar dari URL
+        $pdf->render();
+
+        return $pdf->stream('Data User ' . date('Y-m-d H:i:s') . '.pdf');
     }
 }

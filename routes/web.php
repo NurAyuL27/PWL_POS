@@ -74,6 +74,7 @@ Route::middleware(['auth'])->group(function() { // artinya semua route di dalam 
         Route::get('/level/import', [LevelController::class, 'import']); // ajax form upload excel
         Route::post('/level/import_ajax', [LevelController::class, 'import_ajax']); // ajax import excel
         Route::get('/level/export_excel', [LevelController::class, 'export_excel']);
+        Route::get('/level/export_pdf', [LevelController::class, 'export_pdf']);
         Route::delete('/level/{id}', [LevelController::class, 'destroy']);
     });
 

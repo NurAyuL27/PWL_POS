@@ -1,107 +1,80 @@
-<form action="{{ url('/stok/ajax') }}" method="POST" id="form-tambah">
+<form action="{{ url('/stok/ajax') }}" method="POST" id="form-create">
     @csrf
-    <div class="modal-header">
-        <h5 class="modal-title">Tambah Stok Barang (AJAX)</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-        </button>
-    </div>
-    <div class="modal-body">
-        <div class="form-group">
-            <label>Nama Barang</label>
-            <select name="barang_id" id="barang_id" class="form-control" required>
-                <option value="">- Pilih Barang -</option>
-                @foreach($barang as $b)
-                    <option value="{{ $b->barang_id }}">{{ $b->nama_barang }}</option>
-                @endforeach
-            </select>
-            <small id="error-barang_id" class="error-text form-text text-danger"></small>
-        </div>
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Tambah Stok Barang (AJAX)</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
 
-        <div class="form-group">
-            <label>Nama Penyetok</label>
-            <select name="user_id" id="user_id" class="form-control" required>
-                <option value="">- Pilih User -</option>
-                @foreach($user as $u)
-                    <option value="{{ $u->user_id }}">{{ $u->nama }}</option>
-                @endforeach
-            </select>
-            <small id="error-user_id" class="error-text form-text text-danger"></small>
-        </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <label for="barang_id">Nama Barang</label>
+                    <select name="barang_id" class="form-control" required>
+                        <option value="">- Pilih Barang -</option>
+                        @foreach($barang as $b)
+                            <option value="{{ $b->barang_id }}">{{ $b->nama_barang }}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger error-text" id="error-barang_id"></small>
+                </div>
 
-        <div class="form-group">
-            <label>Tanggal Stok</label>
-            <input type="datetime-local" name="stok_tanggal" id="stok_tanggal" class="form-control" required>
-            <small id="error-stok_tanggal" class="error-text form-text text-danger"></small>
-        </div>
+                <div class="form-group">
+                    <label for="user_id">Nama Penyetok</label>
+                    <select name="user_id" class="form-control" required>
+                        <option value="">- Pilih User -</option>
+                        @foreach($user as $u)
+                            <option value="{{ $u->user_id }}">{{ $u->nama }}</option>
+                        @endforeach
+                    </select>
+                    <small class="text-danger error-text" id="error-user_id"></small>
+                </div>
 
-        <div class="form-group">
-            <label>Jumlah Stok</label>
-            <input type="number" name="stok_jumlah" id="stok_jumlah" class="form-control" min="1" required>
-            <small id="error-stok_jumlah" class="error-text form-text text-danger"></small>
+                <div class="form-group">
+                    <label for="stok_tanggal">Tanggal Stok</label>
+                    <input type="datetime-local" name="stok_tanggal" class="form-control" required>
+                    <small class="text-danger error-text" id="error-stok_tanggal"></small>
+                </div>
+
+                <div class="form-group">
+                    <label for="stok_jumlah">Jumlah Stok</label>
+                    <input type="number" name="stok_jumlah" class="form-control" min="1" required>
+                    <small class="text-danger error-text" id="error-stok_jumlah"></small>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+            </div>
         </div>
-    </div>
-    <div class="modal-footer">
-        <button type="button" class="btn btn-warning" data-dismiss="modal">Batal</button>
-        <button type="submit" class="btn btn-primary">Simpan</button>
     </div>
 </form>
 
 <script>
-    $(document).ready(function () {
-        $("#form-tambah").validate({
-            rules: {
-                barang_id: { required: true },
-                user_id: { required: true },
-                stok_tanggal: { required: true },
-                stok_jumlah: { required: true, min: 1 }
+    $('#form-create').on('submit', function (e) {
+        e.preventDefault();
+        let form = this;
+
+        $.ajax({
+            url: form.action,
+            method: form.method,
+            data: $(form).serialize(),
+            success: function (response) {
+                $('.error-text').text('');
+                if (response.status) {
+                    $('#myModal').modal('hide');
+                    Swal.fire('Berhasil!', response.message, 'success');
+                    dataStok.ajax.reload(); // reload DataTable
+                } else {
+                    $.each(response.msgField, function (key, val) {
+                        $('#error-' + key).text(val[0]);
+                    });
+                    Swal.fire('Gagal!', response.message, 'error');
+                }
             },
-            submitHandler: function (form) {
-                $.ajax({
-                    url: form.action,
-                    type: form.method,
-                    data: $(form).serialize(),
-                    success: function (response) {
-                        $('.error-text').text('');
-                        if (response.status) {
-                            $('#modal-crud').modal('hide');
-                            Swal.fire({
-                                icon: 'success',
-                                title: 'Berhasil',
-                                text: response.message
-                            });
-                            dataStok.ajax.reload();
-                        } else {
-                            $.each(response.msgField, function (prefix, val) {
-                                $('#error-' + prefix).text(val[0]);
-                            });
-                            Swal.fire({
-                                icon: 'error',
-                                title: 'Terjadi Kesalahan',
-                                text: response.message
-                            });
-                        }
-                    },
-                    error: function () {
-                        Swal.fire({
-                            icon: 'error',
-                            title: 'Error!',
-                            text: 'Terjadi kesalahan pada server'
-                        });
-                    }
-                });
-                return false;
-            },
-            errorElement: 'span',
-            errorPlacement: function (error, element) {
-                error.addClass('invalid-feedback');
-                element.closest('.form-group').append(error);
-            },
-            highlight: function (element) {
-                $(element).addClass('is-invalid');
-            },
-            unhighlight: function (element) {
-                $(element).removeClass('is-invalid');
+            error: function () {
+                Swal.fire('Error!', 'Terjadi kesalahan pada server', 'error');
             }
         });
     });

@@ -24,7 +24,7 @@
         </div>        
         <div class="form-group">
             <label>Nama Barang</label>
-            <input type="text" name="barang_nama" id="barang_nama" class="form-control" required>
+            <input type="text" name="nama_barang" id="nama_barang" class="form-control" required>
             <small id="error-nama" class="error-text form-text text-danger"></small>
         </div>
         <div class="form-group">
@@ -49,7 +49,7 @@
         $("#form-tambah").validate({
             rules: {
                 kategori_id: { required: true, number: true },
-                barang_nama: { required: true, minlength: 3, maxlength: 100 },
+                nama_barang: { required: true, minlength: 3, maxlength: 100 },
                 harga_beli: { required: true, number: true },
                 harga_jual: { required: true, number: true },
             },

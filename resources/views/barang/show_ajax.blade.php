@@ -31,7 +31,7 @@
             </tr>
              <tr>
                  <th class="text-right col-3">Nama barang :</th>
-                 <td class="col-9">{{ $barang->barang_nama }}</td>
+                 <td class="col-9">{{ $barang->nama_barang }}</td>
              </tr>
              <tr>
                  <th class="text-right col-3">Kategori barang :</th>

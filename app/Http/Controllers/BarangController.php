@@ -31,7 +31,7 @@ class BarangController extends Controller
 
     public function list(Request $request)
     {
-        $barang = BarangModel::select('barang_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual', 'kategori_id')
+        $barang = BarangModel::select('barang_id', 'barang_kode', 'nama_barang', 'harga_beli', 'harga_jual', 'kategori_id')
             ->with('kategori');
 
         $kategori_id = $request->input('filter_kategori');
@@ -63,7 +63,7 @@ class BarangController extends Controller
             $rules = [
                 'kategori_id' => ['required', 'integer', 'exists:m_kategori,kategori_id'],
                 'barang_kode' => ['required', 'min:3', 'max:20', 'unique:m_barang,barang_kode'],
-                'barang_nama' => ['required', 'string', 'max:100'],
+                'nama_barang' => ['required', 'string', 'max:100'],
                 'harga_beli' => ['required', 'numeric'],
                 'harga_jual' => ['required', 'numeric'],
             ];
@@ -101,7 +101,7 @@ class BarangController extends Controller
             $rules = [
                 'kategori_id' => ['required', 'integer', 'exists:m_kategori,kategori_id'],
                 'barang_kode' => ['required', 'min:3', 'max:20', 'unique:m_barang,barang_kode,' . $id . ',barang_id'],
-                'barang_nama' => ['required', 'string', 'max:100'],
+                'nama_barang' => ['required', 'string', 'max:100'],
                 'harga_beli' => ['required', 'numeric'],
                 'harga_jual' => ['required', 'numeric'],
             ];
@@ -195,7 +195,7 @@ class BarangController extends Controller
                         $insert[] = [
                             'kategori_id' => $value['A'],
                             'barang_kode' => $value['B'],
-                            'barang_nama' => $value['C'],
+                            'nama_barang' => $value['C'],
                             'harga_beli' => $value['D'],
                             'harga_jual' => $value['E'],
                             'created_at' => now(),
@@ -224,7 +224,7 @@ class BarangController extends Controller
 
     public function export_excel() {
         // ambil data barang yang akan di export
-        $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
+        $barang = BarangModel::select('kategori_id', 'barang_kode', 'nama_barang', 'harga_beli', 'harga_jual')
             ->orderBy('kategori_id')
             ->with('kategori')
             ->get();
@@ -247,7 +247,7 @@ class BarangController extends Controller
         foreach ($barang as $key => $value) {
             $sheet->setCellValue('A'.$baris, $no);
             $sheet->setCellValue('B'.$baris, $value->barang_kode);
-            $sheet->setCellValue('C'.$baris, $value->barang_nama);
+            $sheet->setCellValue('C'.$baris, $value->nama_barang);
             $sheet->setCellValue('D'.$baris, $value->harga_beli);
             $sheet->setCellValue('E'.$baris, $value->harga_jual);
             $sheet->setCellValue('F'.$baris, $value->kategori->kategori_nama); 
@@ -279,7 +279,7 @@ class BarangController extends Controller
 
     public function export_pdf()
     {
-    $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
+    $barang = BarangModel::select('kategori_id', 'barang_kode', 'nama_barang', 'harga_beli', 'harga_jual')
     ->orderBy('kategori_id')
     ->orderBy('barang_kode')
     ->with('kategori')

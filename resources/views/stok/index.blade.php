@@ -43,13 +43,13 @@
     <table class="table table-bordered table-sm table-striped table-hover" id="table-stok">
       <thead>
         <tr>
-          <th>No</th>
-          <th>ID Stok</th>
-          <th>Nama Barang</th>
-          <th>Nama Penyetok</th>
-          <th>Tanggal Stok</th>
-          <th>Jumlah Stok</th>
-          <th>Aksi</th>
+          <th style="text-align: center;">No</th>
+          <th style="text-align: center;">ID Stok</th>
+          <th style="text-align: center;">Nama Barang</th>
+          <th style="text-align: center;">Nama Penyetok</th>
+          <th style="text-align: center;">Tanggal Stok</th>
+          <th style="text-align: center;">Jumlah Stok</th>
+          <th style="text-align: center;">Aksi</th>
         </tr>
       </thead>
       <tbody></tbody>
@@ -83,14 +83,11 @@
       },
       columns: [
         {
-          data: null,
+          data: "DT_RowIndex",
           className: "text-center",
-          width: "5%",
+          width: "4%",
           orderable: false,
-          searchable: false,
-          render: function (data, type, row, meta) {
-            return meta.row + 1;
-          }
+          searchable: false
         },
         {
           data: "stok_id",

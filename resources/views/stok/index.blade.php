@@ -23,7 +23,7 @@
               <select name="filter_barang" class="form-control form-control-sm filter_barang">
                 <option value="">- Semua -</option>
                 @foreach($barang as $l)
-                  <option value="{{ $l->barang_id }}">{{ $l->barang_nama }}</option>
+                  <option value="{{ $l->barang_id }}">{{ $l->nama_barang }}</option>
                 @endforeach
               </select>
               <small class="form-text text-muted">Nama Barang</small>

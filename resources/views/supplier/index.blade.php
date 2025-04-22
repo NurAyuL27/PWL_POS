@@ -64,7 +64,7 @@
     });
   }
 
-  var tableSupplier;
+  var dataSupplier;
   $(document).ready(function () {
     tableSupplier = $('#table-supplier').DataTable({
       processing: true,

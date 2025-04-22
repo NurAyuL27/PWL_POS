@@ -33,8 +33,8 @@
     <aside class="main-sidebar sidebar-dark-primary elevation-4">
       <!-- Brand Logo -->
       <a href="{{url('/')}}" class="brand-link">
-        <img src="{{asset('adminlte/dist/img/AdminLTELogo.png')}}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-        <span class="brand-text font-weight-light">PWL - starter code</span>
+        <span class="brand-text font-weight-light" style="font-family: 'Anton', sans-serif; letter-spacing: 5px;">
+        <b>Point of Sale</b> <i class="fas fa-store"></i>
       </a>
 
       <!-- Sidebar -->

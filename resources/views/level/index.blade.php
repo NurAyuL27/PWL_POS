@@ -66,9 +66,9 @@
     });
   }
 
-  var tableLevel;
+  var dataleLevel;
   $(document).ready(function () {
-    tableLevel = $('#table-level').DataTable({
+    dataleLevel = $('#table-level').DataTable({
       processing: true,
       serverSide: true,
       ajax: {

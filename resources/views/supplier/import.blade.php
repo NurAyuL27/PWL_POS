@@ -59,7 +59,7 @@
                 title: 'Berhasil',
                 text: response.message
               });
-              tableSupplier.ajax.reload(); // Reload datatable supplier
+              dataSupplier.ajax.reload(); // Reload datatable supplier
             } else {
               $('.error-text').text('');
               $.each(response.msgField, function(prefix, val) {

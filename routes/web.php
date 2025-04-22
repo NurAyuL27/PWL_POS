@@ -154,12 +154,12 @@ Route::middleware(['auth'])->group(function() { // artinya semua route di dalam 
         Route::delete('/delete', [ProfileController::class, 'delete'])->name('profile.delete');
     });
 
-    Route::group(['prefix' => 'stok', 'middleware' => ['authorize:ADM,MNG,SPV,STF']], function () {
+    Route::middleware(['authorize:ADM,MNG,SPV,STF'])->group( function () {
         Route::get('/stok', [StokController::class, 'index']); // menampilkan halaman awal stok
         Route::post('/stok/list', [StokController::class, 'list']); // menampilkan data stok dalam bentuk json untuk datatables
         Route::get('/stok/create', [StokController::class, 'create']); // menampilkan halaman form tambah stok
         Route::get('/stok/create_ajax', [StokController::class, 'create_ajax']); // menampilkan halaman form tambah stok ajax
-        Route::post('/stok/ajax', [StokController::class, 'store_ajax']); // menyimpan data stok baru ajax
+        Route::post('/stok/ajax', [StokController::class, 'store_ajax']); // menyimpan data stok baru aj
         Route::get('/stok/{id}/show_ajax', [StokController::class,'show_ajax']); // menampilkan detail stok ajax
         Route::get('/stok/{id}/edit_ajax', [StokController::class, 'edit_ajax']); // menampilkan halaman form edit stok ajax
         Route::put('/stok/{id}/update_ajax', [StokController::class, 'update_ajax']); // menyimpan perubahan data stok ajax
@@ -171,7 +171,7 @@ Route::middleware(['auth'])->group(function() { // artinya semua route di dalam 
         Route::get('/stok/export_pdf', [StokController::class, 'export_pdf']); // menampilkan halaman form export pdf stok
     });
 
-    Route::group(['prefix' => 'penjualan', 'middleware' => ['authorize:ADM,MNG,SPV,STF']], function () {
+    Route::middleware(['authorize:ADM,MNG,SPV,STF'])->group( function () {
         Route::get('/penjualan', [PenjualanController::class, 'index']); // menampilkan halaman awal penjualan
         Route::post('/penjualan/list', [PenjualanController::class, 'list']); // menampilkan data penjualan dalam bentuk json untuk datatables
         Route::get('/penjualan/create_ajax', [PenjualanController::class, 'create_ajax']); // menampilkan halaman form tambah penjualan ajax

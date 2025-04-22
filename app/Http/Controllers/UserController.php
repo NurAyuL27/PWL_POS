@@ -3,7 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\UserModel; // Ganti dengan model yang sesuai
-use App\Models\LevelModel; // Jika relevan
+use App\Models\LevelModel;
+use App\Models\Level;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Yajra\DataTables\Facades\DataTables;
@@ -56,7 +57,8 @@ class UserController extends Controller
 
     public function create_ajax()
     {
-        return view('user.create_ajax');
+        $level = LevelModel::select('level_id', 'level_nama')->get();
+        return view('user.create_ajax', ['level' => $level]);
     }
 
     public function store_ajax(Request $request)

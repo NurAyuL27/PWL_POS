@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
@@ -59,28 +59,22 @@
     </style>
 </head>
 <body>
-
     <table class="border-bottom-header">
         <tr>
             <td width="15%" class="text-center">
-                <img src="{{ asset('polinema-bw.png') }}">
+                @php
+                    $imagePath = public_path('polinema-bw.png');
+                    $imageData = base64_encode(file_get_contents($imagePath));
+                    $src = 'data: ' . mime_content_type($imagePath) . ';base64,' . $imageData;
+                @endphp
+                <img src="{{ $src }}" width="100">
             </td>
             <td width="85%">
-                <span class="text-center d-block font-11 font-bold mb-1">
-                    KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI
-                </span>
-                <span class="text-center d-block font-13 font-bold mb-1">
-                    POLITEKNIK NEGERI MALANG
-                </span>
-                <span class="text-center d-block font-10">
-                    Jl. Soekarno-Hatta No. 9 Malang 65141
-                </span>
-                <span class="text-center d-block font-10">
-                    Telepon (0341) 404424 Pes. 101-105, 0341-404420, Fax. (0341) 404420
-                </span>
-                <span class="text-center d-block font-10">
-                    Laman: www.polinema.ac.id
-                </span>
+                <span class="text-center d-block font-11 font-bold mb-1">KEMENTERIAN PENDIDIKAN, KEBUDAYAAN, RISET, DAN TEKNOLOGI</span>
+                <span class="text-center d-block font-13 font-bold mb-1">POLITEKNIK NEGERI MALANG</span>
+                <span class="text-center d-block font-10">Jl. Soekarno-Hatta No. 9 Malang 65141</span>
+                <span class="text-center d-block font-10">Telepon (0341) 404424 Pes. 101- 105, 0341-404420, Fax. (0341) 404420</span>
+                <span class="text-center d-block font-10">Laman: www.polinema.ac.id</span>
             </td>
         </tr>
     </table>
@@ -91,18 +85,20 @@
         <thead>
             <tr>
                 <th class="text-center">No</th>
-                <th>Kode Barang</th>
-                <th>Nama Barang</th>
-                <th class="text-right">Harga Beli</th>
-                <th class="text-right">Harga Jual</th>
-                <th>Kategori</th>
+                <th class="text-center">Id Barang</th>
+                <th class="text-center">Kode Barang</th>
+                <th class="text-center">Nama Barang</th>
+                <th class="text-center">Harga Beli</th>
+                <th class="text-center">Harga Jual</th>
+                <th class="text-center">Kategori</th>
             </tr>
         </thead>
         <tbody>
             @foreach($barang as $b)
                 <tr>
                     <td class="text-center">{{ $loop->iteration }}</td>
-                    <td>{{ $b->barang_kode }}</td>
+                    <td class="text-center">{{ $b->barang_id }}</td>
+                    <td class="text-center">{{ $b->barang_kode }}</td>
                     <td>{{ $b->nama_barang }}</td>
                     <td class="text-right">{{ number_format($b->harga_beli, 0, ',', '.') }}</td>
                     <td class="text-right">{{ number_format($b->harga_jual, 0, ',', '.') }}</td>
@@ -111,6 +107,5 @@
             @endforeach
         </tbody>
     </table>
-
 </body>
 </html>

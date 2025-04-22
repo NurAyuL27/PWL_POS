@@ -33,7 +33,7 @@
                     </tr>
                     <tr>
                         <th>Nama</th>
-                        <td>{{ $barang->nama_barang }}</td>
+                        <td>{{ $barang->barang_nama }}</td>
                     </tr>
                     <tr>
                         <th>Kategori</th>

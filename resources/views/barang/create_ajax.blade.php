@@ -14,7 +14,7 @@
                 </div>
                 <div class="form-group">
                     <label>Nama Barang</label>
-                    <input value="" type="text" name="barang_nama" id="barang_nama" class="form-control" required>
+                    <input value="" type="text" name="nama_barang" id="nama_barang" class="form-control" required>
                     <small id="error-barang-nama" class="error-text form-text text-danger"></small>
                 </div>
                 <div class="form-group">
@@ -51,7 +51,7 @@
             rules: {
                 kategori_id: { required: true },
                 barang_kode: { required: true, minlength: 3 },
-                barang_nama: { required: true, minlength: 3 },
+                nama_barang: { required: true, minlength: 3 },
                 harga_beli: { required: true, number: true, min: 1 },
                 harga_jual: { required: true, number: true, min: 1 }
             },

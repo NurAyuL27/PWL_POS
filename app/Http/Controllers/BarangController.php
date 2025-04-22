@@ -88,36 +88,38 @@ class BarangController extends Controller
         return redirect('/');
     }
 
-    public function edit_ajax($id)
+    public function edit_ajax(string $id)
     {
         $barang = BarangModel::find($id);
-        $level = LevelModel::select('level_id', 'level_nama')->get();
-        return view('barang.edit_ajax', ['barang' => $barang, 'level' => $level]);
+        $kategori = KategoriModel::select('kategori_id', 'kategori_nama')->get();
+
+        return view('barang.edit_ajax')->with('barang', $barang)->with('kategori', $kategori);
     }
 
-    public function update_ajax(Request $request, $id)
+    public function update_ajax(Request $request, string $id)
     {
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
-                'kategori_id' => ['required', 'integer', 'exists:m_kategori,kategori_id'],
-                'barang_kode' => ['required', 'min:3', 'max:20', 'unique:m_barang,barang_kode,' . $id . ',barang_id'],
-                'nama_barang' => ['required', 'string', 'max:100'],
-                'harga_beli' => ['required', 'numeric'],
-                'harga_jual' => ['required', 'numeric'],
+                'kategori_id' => 'required|exists:m_kategori,kategori_id',
+                'barang_kode' => 'required|min:3|unique:m_barang,barang_kode,' . $id . ',barang_id',
+                'nama_barang' => 'required|min:3',
+                'harga_beli' => 'required|numeric|min:1',
+                'harga_jual' => 'required|numeric|min:1',
             ];
 
             $validator = Validator::make($request->all(), $rules);
+
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors()
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors(),
                 ]);
             }
 
-            $barang = BarangModel::find($id);
-            if ($barang) {
-                $barang->update($request->all());
+            $check = BarangModel::find($id);
+            if ($check) {
+                $check->update($request->all());
                 return response()->json([
                     'status' => true,
                     'message' => 'Data berhasil diupdate'
@@ -129,14 +131,14 @@ class BarangController extends Controller
                 ]);
             }
         }
-
         return redirect('/');
     }
 
-    public function confirm_ajax($id)
+    public function confirm_ajax(string $id)
     {
         $barang = BarangModel::find($id);
-        return view('barang.confirm_ajax', ['barang' => $barang]);
+
+        return view('barang.confirm_ajax')->with('barang', $barang);
     }
 
     public function delete_ajax(Request $request, $id)
@@ -164,6 +166,12 @@ class BarangController extends Controller
             }
         }
         return redirect('/');
+    }
+
+    public function show_ajax(string $id)
+    {
+        $barang = BarangModel::with('kategori')->find($id);
+        return view('barang.show_ajax', ['barang' => $barang]);
     }
 
     public function import()

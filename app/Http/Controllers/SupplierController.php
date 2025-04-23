@@ -47,6 +47,35 @@ class SupplierController extends Controller
             ->make(true);
     }
 
+    public function create()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Tambah Supplier',
+            'list' => ['Home', 'Supplier', 'Tambah']
+        ];
+
+        $page = (object) [
+            'title' => 'Tambah Supplier Baru'
+        ];
+
+        $activeMenu = 'supplier';
+
+        return view('supplier.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'supplier_kode' => 'required',
+            'supplier_nama' => 'required',
+            'supplier_alamat' => 'required'
+        ]);
+
+        SupplierModel::create($request->all());
+
+        return redirect('/supplier')->with('success', 'Data supplier berhasil ditambahkan');
+    }
+
     public function create_ajax()
     {
         return view('supplier.create_ajax');

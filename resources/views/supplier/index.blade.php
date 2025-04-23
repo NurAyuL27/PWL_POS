@@ -9,6 +9,7 @@
     <a href="{{ url('/supplier/export_excel') }}" class="btn btn-primary"><i class="fa fa-fileexcel"></i> Export Supplier Excel</a>
     <a href="{{ url('/supplier/export_pdf') }}" class="btn btn-warning"><i class="fa fa-filepdf"></i> Export Supplier PDF</a>
       <button onclick="modalAction('{{ url('/supplier/create_ajax') }}')" class="btn btn-success">Tambah Data (Ajax)</button>
+      <button onclick="modalAction('{{ url('/supplier/create') }}')" class="btn btn-success">Tambah Data</button>
     </div>
   </div>
 

@@ -51,6 +51,40 @@ class BarangController extends Controller
             ->make(true);
     }
 
+    public function create()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Tambah Barang',
+            'list' => ['Home', 'Barang', 'Tambah']
+        ];
+
+        $page = (object) [
+            'title' => 'Tambah Barang baru'
+        ];
+
+        $activeMenu = 'barang';
+
+        $kategori = KategoriModel::all();
+
+        return view('barang.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu, 'kategori' => $kategori]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'kategori_id' => 'required',
+            'barang_kode' => 'required|unique:m_barang',
+            'barang_nama' => 'required',
+            'harga_beli' => 'required',
+            'harga_jual' => 'required',
+        ]);
+
+        BarangModel::create($request->all());
+
+        return redirect('/barang')->with('success', 'Data berhasil ditambahkan');
+    }
+
+
     public function create_ajax()
     {
         $kategori = KategoriModel::select('kategori_id', 'kategori_nama')->get();

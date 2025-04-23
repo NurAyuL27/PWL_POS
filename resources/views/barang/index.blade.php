@@ -8,7 +8,8 @@
                 <button onclick="modalAction('{{ url('/barang/import') }}')" class="btn btn-info">Import Barang</button>
                 <a href="{{ url('/barang/export_excel') }}" class="btn btn-primary"><i class="fa fa-fileexcel"></i>Export Barang (Excel)</a>
                 <a href="{{ url('/barang/export_pdf') }}" class="btn btn-warning"><i class="fa fa-filepdf"></i> Export Barang (PDF)</a>
-                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data Ajax</button>      
+                <button onclick="modalAction('{{ url('/barang/create_ajax') }}')" class="btn btn-success">Tambah Data Ajax</button>  
+                <button onclick="modalAction('{{ url('/barang/create') }}')" class="btn btn-success">Tambah Data</button>          
              </div>
          </div>
          <div class="card-body">

@@ -32,6 +32,52 @@ class UserController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Tambah User',
+            'list'  => ['Home', 'User', 'Tambah']
+        ];
+
+        $page = (object) [
+            'title' => 'Tambah user baru'
+        ];
+
+        $level = LevelModel::all(); // Ambil data level untuk ditampilkan di form
+        $activeMenu = 'user'; // Set menu yang sedang aktif
+
+        return view('user.create', [
+            'breadcrumb' => $breadcrumb,
+            'page'       => $page,
+            'level'      => $level,
+            'activeMenu' => $activeMenu
+        ]);
+    }
+
+    // Menyimpan data user baru
+    public function store(Request $request)
+    {
+        $request->validate([
+            // username harus diisi, berupa string, minimal 3 karakter, dan bernilai unik di tabel m_user kolom username
+            'username' => 'required|string|min:3|unique:m_user,username',
+            // nama harus diisi, berupa string, dan maksimal 100 karakter
+            'nama' => 'required|string|max:100', 
+            // password harus diisi dan minimal 5 karakter
+            'password' => 'required|min:5',
+            // level_id harus diisi dan berupa angka
+            'level_id' => 'required|integer'  
+        ]);
+
+        UserModel::create([
+            'username' => $request->username,
+            'nama'     => $request->nama,
+            'password' => bcrypt($request->password), // password dienkripsi sebelum disimpan
+            'level_id' => $request->level_id
+        ]);
+
+        return redirect('/user')->with('success', 'Data user berhasil disimpan');
+    }
+
     public function list(Request $request)
     {
         $users = UserModel::select('user_id', 'username', 'level_id', 'nama', 'created_at', 'updated_at')

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -23,10 +22,20 @@ class PenjualanModel extends Model
     public function user()
     {
         return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
-    }    
+    }
+
     // Relasi ke tabel penjualan detail (t_penjualan_detail)
     public function detail()
     {
         return $this->hasMany(PenjualanDetailModel::class, 'penjualan_id');
+    }
+
+    // Method untuk menghitung total nominal transaksi
+    public function totalTransaksi()
+    {
+        // Menghitung total harga penjualan berdasarkan detail barang
+        return $this->detail->sum(function ($item) {
+            return $item->harga;
+        });
     }
 }

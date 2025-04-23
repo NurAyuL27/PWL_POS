@@ -30,6 +30,34 @@ class LevelController extends Controller
         ]);
     }
 
+    public function create()
+    {
+        $breadcrumb = (object) [
+            'title' => 'Tambah Level',
+            'list' => ['Home', 'Level', 'Tambah']
+        ];
+
+        $page = (object) [
+            'title' => 'Tambah Level Baru'
+        ];
+
+        $activeMenu = 'level';
+
+        return view('level.create', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+    }
+
+    public function store(Request $request)
+    {
+        $request->validate([
+            'level_kode' => 'required|unique:m_level',
+            'level_nama' => 'required'
+        ]);
+
+        LevelModel::create($request->all());
+
+        return redirect('/level')->with('status', 'Data level berhasil ditambahkan!');
+    }
+
     public function list(Request $request)
     {
         $level = LevelModel::select('level_id', 'level_nama', 'level_kode');

@@ -13,10 +13,7 @@ class BarangModel extends Model
 
     protected $table = 'm_barang';
     protected $primaryKey = 'barang_id';
-    //protected $fillable = ['barang_kode', 'nama_barang', 'kategori_id', 'stok', 'harga_beli', 'harga_jual'];
-    protected $fillable = [
-    'kategori_id', 'barang_kode', 'nama_barang', 'harga_beli', 'harga_jual', 'image', 'created_at', 'updated_at'
-    ];
+    protected $fillable = ['nama_barang', 'kategori_id', 'harga_beli', 'harga_jual', 'image'];
 
 
     public function kategori(): BelongsTo
@@ -27,7 +24,7 @@ class BarangModel extends Model
     protected function image(): Attribute
     {
         return Attribute::make(
-            get: fn($image) => url('/storage/barang/' . $image),
+            get: fn($image) => url('/storage/posts/' . $image),
         );
     }
 }

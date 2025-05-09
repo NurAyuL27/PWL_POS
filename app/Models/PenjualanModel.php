@@ -22,24 +22,14 @@ class PenjualanModel extends Model
     ];
 
     // Relasi ke tabel user (m_user)
-    public function user()
+    public function user(): BelongsTo
     {
         return $this->belongsTo(UserModel::class, 'user_id', 'user_id');
     }
 
-    // Relasi ke tabel penjualan detail (t_penjualan_detail)
-    public function detail()
+    public function penjualan_detail()
     {
-        return $this->hasMany(PenjualanDetailModel::class, 'penjualan_id');
-    }
-
-    // Method untuk menghitung total nominal transaksi
-    public function totalTransaksi()
-    {
-        // Menghitung total harga penjualan berdasarkan detail barang
-        return $this->detail->sum(function ($item) {
-            return $item->harga;
-        });
+        return $this->hasMany(PenjualanDetailModel::class, 'penjualan_id', 'penjualan_id');
     }
 
     protected function image(): Attribute
